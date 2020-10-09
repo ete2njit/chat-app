@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Socket } from './Socket';
+import "../static/chatstyle.css";
 
 
 export function Chat(props) {
@@ -23,16 +24,16 @@ export function Chat(props) {
     }
     
     return (
-        <ol>
-            {chat.map((address, index) =>
-                <li key={index}>{address}</li>)}
-                
+        <div class="chat-box">
+            <ol>
+                {chat.map((address, index) =>
+                    <li key={index}>{address}</li>)}
+            </ol>
             <input
                 type="text"
                 value={displayCount}
                 onChange={handleChange}
             />
-        
-        </ol>
+        </div>
     );
 }
