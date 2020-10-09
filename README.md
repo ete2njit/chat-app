@@ -8,6 +8,7 @@
   e) `npm install --save-dev webpack`    
   f) `npm install socket.io-client --save`    
   g) `pip install python-dotenv`
+  h) `npm install --save-dev css-loader`
 If you see any error messages, make sure you use `sudo pip` or `sudo npm`. If it says "pip cannot be found", run `which pip` and use `sudo [path to pip from which pip] install`  
   
 # Getting PSQL to work with Python  
@@ -52,3 +53,16 @@ If that doesn't work: `sudo vim $(psql -c "show hba_file;" | grep pg_hba.conf)`
   a) `npm run watch`. If prompted to install webpack-cli, type "yes"    
   b) In a new terminal, `python app.py`    
   c) Preview Running Application (might have to clear your cache by doing a hard refresh)    
+
+
+
+
+
+
+
+
+
+Issue with react and css
+https://stackoverflow.com/questions/42196583/webpack-cant-resolve-style
+https://webpack.js.org/loaders/css-loader/
+npm install --save-dev css-loader
