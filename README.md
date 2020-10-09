@@ -1,5 +1,5 @@
 # Set up React  
-0. `cd ~/environment && git clone https://github.com/Sresht/lect11/ && cd lect11`    
+0. `git clone https://github.com/NJIT-CS490/project2-ete2` 
 1. Install your stuff!    
   a) `npm install`    
   b) `pip install flask-socketio`    
@@ -7,6 +7,7 @@
   d) `npm install -g webpack`    
   e) `npm install --save-dev webpack`    
   f) `npm install socket.io-client --save`    
+  g) `pip install python-dotenv`
 If you see any error messages, make sure you use `sudo pip` or `sudo npm`. If it says "pip cannot be found", run `which pip` and use `sudo [path to pip from which pip] install`  
   
 # Getting PSQL to work with Python  
