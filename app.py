@@ -17,7 +17,11 @@ socketio.init_app(app, cors_allowed_origins="*")
 dotenv_path = join(dirname(__file__), 'sql.env')
 load_dotenv(dotenv_path)
 
-database_uri = os.environ['DATABASE_URL']
+
+sql_user = os.environ['SQL_USER']
+sql_pwd = os.environ['SQL_PASSWORD']
+
+database_uri = 'postgresql://{}:{}@localhost/postgres'.format(sql_user, sql_pwd)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
