@@ -4,15 +4,16 @@ import * as React from 'react';
 
 import { Button } from './Button';
 import { Socket } from './Socket';
+import { Chat }   from './Chat';
 
 export function Content() {
-    const [addresses, setAddresses] = React.useState([]);
+    const [chatlog, setChatlog] = React.useState([]);
     
     function getNewAddresses() {
         React.useEffect(() => {
             Socket.on('addresses received', (data) => {
                 console.log("Received addresses from server: " + data['allAddresses']);
-                setAddresses(data['allAddresses']);
+                setChatlog(data['allAddresses']);
             })
         });
     }
@@ -21,11 +22,7 @@ export function Content() {
 
     return (
         <div>
-            <h1>USPS Addresses!</h1>
-                <ol>
-                    {addresses.map((address, index) =>
-                        <li key={index}>{address}</li>)}
-                </ol>
+            <Chat chatlog={ chatlog }/>
             <Button />
         </div>
     );
