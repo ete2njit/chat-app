@@ -1,12 +1,12 @@
-    
+  
 import * as React from 'react';
 
-
-import { Button } from './Button';
 import { Socket } from './Socket';
 import { Chat }   from './Chat';
 
 export function Content() {
+    // display count of 0 means show the whole chatlog
+    const [displayCount, setDisplayCount] = React.useState(5);     
     const [chatlog, setChatlog] = React.useState([]);
     
     function getNewAddresses() {
@@ -18,13 +18,26 @@ export function Content() {
         });
     }
     
+    function handleChange(event) {
+        setDisplayCount(event.target.value);
+    }
+    
     getNewAddresses();
 
     return (
         <div>
-            <Chat chatlog={ chatlog }/>
-            <Button />
+            <div class="displayCount">
+                <input
+                    type="text"
+                    value={displayCount}
+                    onChange={handleChange}
+                />
+            </div>
+            <div>
+                <Chat chatlog={ chatlog } displayCount={ displayCount }/>
+            </div>
         </div>
+    
     );
 }
  
