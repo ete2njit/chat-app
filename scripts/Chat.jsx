@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Socket } from './Socket';
 import { Input } from './Input';
+import { Message } from './Message';
 import "../static/chatstyle.css";
 
 
@@ -17,12 +17,14 @@ export function Chat(props) {
         }
     
     return (
-        <div class="chat-box">
-            <ol>
-                {chat.map((address, index) =>
-                    <li key={index}>{address}</li>)}
-            </ol>
-            <Input />
+        <div class="chat-window">
+            <div class="chat-box">
+                {chat.map((message, index) => (
+                    <Message key={ index } message={ message } />))}
+            </div>
+            <div class="input-box">
+                <Input />
+            </div>
         </div>
     );
 }

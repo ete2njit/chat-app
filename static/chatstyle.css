@@ -1,14 +1,21 @@
-.chat-box {
+.chat-window {
     position: absolute;
     top: 5%;
     left: 22.5%;
     right: 22.5%;
+    bottom: 10%;
     
+}
+
+.chat-box {
+    position: relative;
     background: #F0F;
-    
     border-style: solid;
-    
-    width: 55%;
-    height: 80%;
     overflow-y: scroll;
+    height: 98%;
+}
+
+.input-box {
+    top: 98%;
+    width: 100%;
 }
