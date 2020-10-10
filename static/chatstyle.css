@@ -1,4 +1,13 @@
 .chat-box {
+    position: absolute;
+    top: 5%;
+    left: 22.5%;
+    right: 22.5%;
+    
+    background: #F0F;
+    
+    border-style: solid;
+    
     width: 55%;
     height: 80%;
     overflow-y: scroll;
