@@ -1,0 +1,13 @@
+.login {
+    position: absolute;
+    top: 30%;
+    left: 15%;
+    right: 15%;
+    text-align: center;
+}
+
+#usernameInput {
+    position: relative;
+    width: 20%;
+}
+

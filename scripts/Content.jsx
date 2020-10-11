@@ -30,11 +30,10 @@ export function Content() {
     
     getAllMessages();
 
-
     if(username == "")
     {
         return (
-            <div>
+            <div className="login-page">
                 <Login setName={ setUsername } />
             </div>
         )
@@ -42,7 +41,7 @@ export function Content() {
 
             
     return (
-        <div>
+        <div className="main-page">
             <Information username={ username } />
             <Chat class="chat-window" chatlog={ chatlog } displayCount={ displayCount }/>
             <Settings displayCount={ displayCount } handleChange={ handleChange } />
