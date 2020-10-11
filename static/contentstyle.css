@@ -7,6 +7,20 @@
     
 }
 
+.information-window {
+    position: absolute;
+    top: 5%;
+    left: 2.5%;
+    width: 20%;
+    bottom: 20%;
+    
+}
+
+.settings-window {
+    position: absolute;
+    top: 5%;
+}
+
 .login-page {
     position: absolute;
     width: 100%;

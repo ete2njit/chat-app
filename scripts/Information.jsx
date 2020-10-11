@@ -7,7 +7,9 @@ import "../static/informationstyle.css";
 export function Information(props) {
     return (
         <div className="information-window">
-            <span>Logged in as { props.username }</span>
+            <div className="information-content">
+                <span>Logged in as { props.username }</span>
+            </div>
         </div>
     )
 }

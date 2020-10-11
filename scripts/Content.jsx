@@ -42,9 +42,9 @@ export function Content() {
             
     return (
         <div className="main-page">
-            <Information username={ username } />
-            <Chat class="chat-window" chatlog={ chatlog } displayCount={ displayCount }/>
-            <Settings displayCount={ displayCount } handleChange={ handleChange } />
+            <Information    class="information-window"  username={ username } />
+            <Chat           class="chat-window"         chatlog={ chatlog } displayCount={ displayCount }/>
+            <Settings       class="settings-window"     displayCount={ displayCount } handleChange={ handleChange } />
         </div>
     
     );
