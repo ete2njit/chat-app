@@ -5,6 +5,7 @@ import { Socket }       from './Socket';
 import { Chat }         from './Chat';
 import { Login }        from './Login';
 import { Information }  from './Information';
+import { Settings }     from './Settings';
 import "../static/contentstyle.css";
 
 
@@ -42,8 +43,9 @@ export function Content() {
             
     return (
         <div>
-            <Information username={ username } displayCount={ displayCount } handleChange={ handleChange } />
+            <Information username={ username } />
             <Chat class="chat-window" chatlog={ chatlog } displayCount={ displayCount }/>
+            <Settings displayCount={ displayCount } handleChange={ handleChange } />
         </div>
     
     );
