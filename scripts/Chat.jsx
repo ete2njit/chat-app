@@ -17,12 +17,12 @@ export function Chat(props) {
         }
     
     return (
-        <div class="chat-window">
-            <div class="chat-box">
+        <div className="chat-window">
+            <div className="chat-box">
                 {chat.map((message, index) => (
                     <Message key={ index } message={ message } />))}
             </div>
-            <div class="input-box">
+            <div className="input-box">
                 <Input />
             </div>
         </div>

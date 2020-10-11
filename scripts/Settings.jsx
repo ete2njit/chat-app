@@ -5,7 +5,7 @@ import * as React from 'react';
 export function Settings(props) {
     return (
         <div>
-            <div class="displayCount">
+            <div className="displayCount">
                 <input
                     type="text"
                     value={ props.displayCount }
