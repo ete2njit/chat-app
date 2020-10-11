@@ -7,7 +7,13 @@ import flask_sqlalchemy
 import flask_socketio
 import models 
 
-ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
+MESSAGE_RECEIVED_CHANNEL = 'message received'
+
+
+
+userPH="user"
+userkeyPH="key"
+
 
 app = flask.Flask(__name__)
 
@@ -34,12 +40,12 @@ db.create_all()
 db.session.commit()
 
 def emit_all_addresses(channel):
-    all_addresses = [ \
-        db_address.address for db_address \
-        in db.session.query(models.Usps).all()]
+    all_messages = [ \
+        db_message.content for db_message \
+        in db.session.query(models.Message).all()]
         
     socketio.emit(channel, {
-        'allAddresses': all_addresses
+        'allMessages': all_messages
     })
 
 
@@ -50,7 +56,7 @@ def on_connect():
         'test': 'Connected'
     })
     
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    emit_all_addresses(MESSAGE_RECEIVED_CHANNEL)
     
 
 @socketio.on('disconnect')
@@ -61,14 +67,14 @@ def on_disconnect():
 def on_new_address(data):
     print("Got an event for new message input with data:", data)
     
-    db.session.add(models.Usps(data["message"]));
+    db.session.add(models.Message(userPH, userkeyPH, data["message"]));
     db.session.commit();
     
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    emit_all_addresses(MESSAGE_RECEIVED_CHANNEL)
 
 @app.route('/')
 def index():
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    emit_all_addresses(MESSAGE_RECEIVED_CHANNEL)
 
     return flask.render_template("index.html")
 
