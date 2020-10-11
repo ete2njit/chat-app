@@ -1,19 +1,24 @@
   
 import * as React from 'react';
 
-import { Socket } from './Socket';
-import { Chat }   from './Chat';
+import { Socket }       from './Socket';
+import { Chat }         from './Chat';
+import { Login }        from './Login';
+import { Information }  from './Information';
+import "../static/contentstyle.css";
+
 
 export function Content() {
     // display count of 0 means show the whole chatlog
     const [displayCount, setDisplayCount] = React.useState(5);     
     const [chatlog, setChatlog] = React.useState([]);
+    const [username, setUsername] = React.useState("")
     
-    function getNewAddresses() {
+    function getAllMessages() {
         React.useEffect(() => {
-            Socket.on('addresses received', (data) => {
-                console.log("Received addresses from server: " + data['allAddresses']);
-                setChatlog(data['allAddresses']);
+            Socket.on('message received', (data) => {
+                console.log("Received messages from server: " + data['allMessages']);
+                setChatlog(data['allMessages']);
             })
         });
     }
@@ -22,20 +27,23 @@ export function Content() {
         setDisplayCount(event.target.value);
     }
     
-    getNewAddresses();
+    getAllMessages();
 
+
+    if(username == "")
+    {
+        return (
+            <div>
+                <Login setName={ setUsername } />
+            </div>
+        )
+    }
+
+            
     return (
         <div>
-            <div class="displayCount">
-                <input
-                    type="text"
-                    value={displayCount}
-                    onChange={handleChange}
-                />
-            </div>
-            <div>
-                <Chat chatlog={ chatlog } displayCount={ displayCount }/>
-            </div>
+            <Information username={ username } displayCount={ displayCount } handleChange={ handleChange } />
+            <Chat class="chat-window" chatlog={ chatlog } displayCount={ displayCount }/>
         </div>
     
     );
