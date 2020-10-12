@@ -6,6 +6,7 @@ import flask
 import flask_sqlalchemy
 import flask_socketio
 import models 
+from chatbot import Chatbot
 from flask import request
 
 MESSAGE_RECEIVED_CHANNEL = 'message received'
@@ -42,6 +43,8 @@ db.session.commit()
 
 users = []
 client_user_dict = {}
+bot = Chatbot()
+users.append(bot.name)
 
 def emit_all_messages(channel):
     all_messages = [ \
@@ -96,6 +99,11 @@ def on_new_message(data):
     print("Got an event for new message input with data:", data)
     
     db.session.add(models.Message(client_user_dict[request.sid], userkeyPH, data["message"]));
+    
+    if bot.isCommand(data["message"]):
+        db.session.add(models.Message(bot.name, bot.key, bot.process(data["message"])))
+    
+    
     db.session.commit();
     
     emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
