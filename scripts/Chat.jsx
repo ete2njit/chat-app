@@ -11,11 +11,21 @@ export function Chat(props) {
     
     function getAllMessages() {
         React.useEffect(() => {
-            Socket.on('message received', (data) => {
-                console.log("Received messages from server " + data['allMessages']);
+            Socket.on('send all messages', (data) => {
+                console.log("Received all messages from server");
                 setChatlog(data['allMessages'])
             })
         });
+    }
+    
+    function getOneMessage() {
+        React.useEffect(() => {
+            Socket.on('send one message', (data) => {
+                console.log("Received the latest message from server " + data['message'])
+                const newChatlog = chatlog.concat(data['message'])
+                setChatlog(newChatlog)
+            })
+        })
     }
     
 
@@ -28,6 +38,7 @@ export function Chat(props) {
             
         }
         
+    getOneMessage();
     getAllMessages();
     
     return (

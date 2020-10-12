@@ -9,8 +9,8 @@ import models
 from chatbot import Chatbot
 from flask import request
 
-MESSAGE_RECEIVED_CHANNEL = 'message received'
-
+SEND_ALL_MESSAGES_CHANNEL = 'send all messages'
+SEND_ONE_MESSAGE_CHANNEL = 'send one message'
 
 
 userPH="user"
@@ -46,14 +46,33 @@ client_user_dict = {}
 bot = Chatbot()
 users.append(bot.name)
 
-def emit_all_messages(channel):
+def emit_all_messages():
+    all_messages = get_all_messages()
+    
+    socketio.emit(SEND_ALL_MESSAGES_CHANNEL, {
+        "allMessages": all_messages
+    })
+    
+
+def get_all_messages():
     all_messages = [ \
         (db_message.content, db_message.user) for db_message \
         in db.session.query(models.Message).all()]
         
-    socketio.emit(channel, {
-        'allMessages': all_messages
+    return all_messages
+    
+    
+@socketio.on('request all users')
+def request_all_users():
+    socketio.emit('all users', {
+        'allUsers': users
     })
+
+
+@socketio.on('connect')
+def on_connect():
+    print('Someone connected!')
+    
     
 @socketio.on('new user')
 def on_new_user(data):
@@ -70,29 +89,19 @@ def on_new_user(data):
         'name': str(data['name'])
     })
     
-    emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
-    
-    
-    
-@socketio.on('request all users')
-def request_all_users():
-    socketio.emit('all users', {
-        'allUsers': users
-    })
-
-
-@socketio.on('connect')
-def on_connect():
-    print('Someone connected!')
+    socketio.emit(SEND_ALL_MESSAGES_CHANNEL, {
+        'allMessages': get_all_messages()
+    }, room = request.sid)
     
 
 @socketio.on('disconnect')
 def on_disconnect():
-    socketio.emit('user disconnected', {
-        'name': client_user_dict[request.sid]
-    });
-    users.remove(client_user_dict[request.sid])
-    print (client_user_dict[request.sid] + ' has disconnected!')
+    if request.sid in client_user_dict:
+        socketio.emit('user disconnected', {
+            'name': client_user_dict[request.sid]
+        });
+        users.remove(client_user_dict[request.sid])
+        print (client_user_dict[request.sid] + ' has disconnected!')
 
 @socketio.on('new message input')
 def on_new_message(data):
@@ -100,18 +109,22 @@ def on_new_message(data):
     
     db.session.add(models.Message(client_user_dict[request.sid], userkeyPH, data["message"]));
     
+    socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
+        'message': [(data["message"], client_user_dict[request.sid])]
+    })
+    
     if bot.isCommand(data["message"]):
-        db.session.add(models.Message(bot.name, bot.key, bot.process(data["message"])))
-    
-    
+        botmessage = bot.process(data["message"])
+        db.session.add(models.Message(bot.name, bot.key, botmessage))
+        socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
+            'message': [(botmessage, bot.name)]
+        })
     db.session.commit();
     
-    emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
+    
 
 @app.route('/')
 def index():
-    emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
-
     return flask.render_template("index.html")
 
 if __name__ == '__main__': 

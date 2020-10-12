@@ -10,8 +10,6 @@ export function Message(props) {
         messageType = "own"
     }
     
-    console.log(messageType)
-    
     return (
         <div className={messageType}>
             <div className="message">

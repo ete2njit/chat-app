@@ -2,12 +2,6 @@ import * as React from 'react';
 import { Socket }  from './Socket';
 import "../static/informationstyle.css";
 
-
-    //https://www.robinwieruch.de/react-remove-item-from-list
-    function removeUser(id) {
-        
-      }
-      
       
 export function Information(props) {
     const [users, setUsers] = React.useState([]);
@@ -15,7 +9,7 @@ export function Information(props) {
      function getUsers() {
         React.useEffect(() => {
             Socket.on('all users', (data) => {
-                console.log("Received messages from server: " + data['allUsers']);
+                console.log("Received userlist from server: " + data['allUsers']);
                 setUsers(data['allUsers']);
             })
         });
@@ -54,8 +48,8 @@ export function Information(props) {
                 <p>Current users ({ users.length }):</p>
                 <div className="users-box">
                     {users.map((user, index) => (
-                        <div>
-                            <span>{ user }</span>
+                        <div key={ index }>
+                            <span key={ index }>{ user }</span>
                         </div>))}
                 </div>
             </div>
