@@ -56,8 +56,19 @@ def emit_all_messages(channel):
 def on_new_user(data):
     client_user_dict[request.sid] = data['name']
     print(data['name'] + " logged in")
+    
+    socketio.emit('all users', {
+        'allUsers': users
+    }, room=request.sid)
+    
     users.append(data['name'])
+    
+    socketio.emit('user connected', {
+        'name': str(data['name'])
+    })
+    
     emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
+    
     
     
 @socketio.on('request all users')
@@ -74,7 +85,11 @@ def on_connect():
 
 @socketio.on('disconnect')
 def on_disconnect():
-    print ('Someone disconnected!' + request.sid)
+    socketio.emit('user disconnected', {
+        'name': client_user_dict[request.sid]
+    });
+    users.remove(client_user_dict[request.sid])
+    print (client_user_dict[request.sid] + ' has disconnected!')
 
 @socketio.on('new message input')
 def on_new_message(data):

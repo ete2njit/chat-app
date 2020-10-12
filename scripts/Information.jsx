@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { Input } from './Input';
-import { Message } from './Message';
 import { Socket }  from './Socket';
 import "../static/informationstyle.css";
 
 
+    //https://www.robinwieruch.de/react-remove-item-from-list
+    function removeUser(id) {
+        
+      }
+      
+      
 export function Information(props) {
     const [users, setUsers] = React.useState([]);
     
@@ -17,7 +21,31 @@ export function Information(props) {
         });
     }
     
+    function userConnected() {
+        React.useEffect(() => {
+            Socket.on('user connected', (data) => {
+                console.log("Received message of user connected: " + data['name'])
+                const newList = users.concat(data['name'])
+                setUsers(newList);
+            })
+        })
+    }
+    
+
+    
+    function userDisconnected() {
+        React.useEffect(() => {
+            Socket.on('user disconnected', (data) => {
+                console.log("Received message of user disconnect: " + data['name'])
+                const newList = users.filter((item) => item !== data['name']);
+                setUsers(newList);
+            })
+        })
+    }
+    
     getUsers();
+    userConnected();
+    userDisconnected();
     
     return (
         <div className="information-window">
@@ -25,9 +53,7 @@ export function Information(props) {
                 <span>Logged in as { props.username }</span>
                 <div className="users-box">
                     {users.map((user, index) => (
-                    <div>
-                        <span>{ user }</span><br></br>
-                    </div>))}
+                        <li>{ user }</li>))}
                 </div>
             </div>
         </div>
