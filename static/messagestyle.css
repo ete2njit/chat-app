@@ -1,0 +1,18 @@
+.message {
+    position: relative;
+    border-radius: 5px;
+    border-style: solid;
+}
+
+
+.other {
+    position: relative;
+    left: 0%;
+    width: 80%;
+}
+
+.own {
+    position: relative;
+    left: 20%;
+    width: 80%;
+}

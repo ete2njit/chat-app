@@ -45,7 +45,7 @@ client_user_dict = {}
 
 def emit_all_messages(channel):
     all_messages = [ \
-        db_message.content for db_message \
+        (db_message.content, db_message.user) for db_message \
         in db.session.query(models.Message).all()]
         
     socketio.emit(channel, {
@@ -95,7 +95,7 @@ def on_disconnect():
 def on_new_message(data):
     print("Got an event for new message input with data:", data)
     
-    db.session.add(models.Message(userPH, userkeyPH, data["message"]));
+    db.session.add(models.Message(client_user_dict[request.sid], userkeyPH, data["message"]));
     db.session.commit();
     
     emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
