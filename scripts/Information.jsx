@@ -50,10 +50,13 @@ export function Information(props) {
     return (
         <div className="information-window">
             <div className="information-content">
-                <span>Logged in as { props.username }</span>
+                <h3>Logged in as { props.username }</h3>
+                <p>Current users ({ users.length }):</p>
                 <div className="users-box">
                     {users.map((user, index) => (
-                        <li>{ user }</li>))}
+                        <div>
+                            <span>{ user }</span>
+                        </div>))}
                 </div>
             </div>
         </div>
