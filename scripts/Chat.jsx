@@ -34,7 +34,7 @@ export function Chat(props) {
         <div className="chat-window">
             <div className="chat-box">
                 {chat.map((message, index) => (
-                    <Message key={ index } message={ message } username={ props.username } />))}
+                    <Message className="message" key={ index } message={ message } username={ props.username } />))}
             </div>
             <div className="input-box">
                 <Input />
