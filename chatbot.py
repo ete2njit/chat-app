@@ -13,7 +13,15 @@ class Chatbot:
         return "Type '!! about' for info about me! Type '!! funtranslate <message>' and I will translate your message!"
     
     def process(self, argument):
-        return argument
+        command = argument.strip()[2:].strip()
+        if command == "about":
+            return self.about()
+        if command == "help":
+            return self.help()
+        
+        
+        
+        return "'" + command + "' is not a recognized command. Type !! help for info about recognized commands"
         
     def isCommand(self, argument):
         if argument.strip()[0] == '!' and argument.strip()[1] == '!':
