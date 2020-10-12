@@ -1,20 +1,32 @@
 .message {
     position: relative;
     border-radius: 5px;
-    border-style: solid;
+    border-style: outset;
+    background-color: #EEE;
 }
 
 
 .other {
-    margin-bottom: 1%;
+    margin-bottom: 0.3%;
+    margin-top: 0.3%;
     position: relative;
-    left: 0%;
+    left: 1%;
     width: 80%;
 }
 
 .own {
-    margin-bottom: 1%;
+    margin-bottom: 0.3%;
+    margin-top: 0.3%;
     position: relative;
-    left: 20%;
+    left: 19%;
     width: 80%;
+}
+
+.author {
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+.content {
+    margin-left: 2px;
 }
