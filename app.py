@@ -6,6 +6,7 @@ import flask
 import flask_sqlalchemy
 import flask_socketio
 import models 
+from flask import request
 
 MESSAGE_RECEIVED_CHANNEL = 'message received'
 
@@ -39,7 +40,10 @@ db.app = app
 db.create_all()
 db.session.commit()
 
-def emit_all_addresses(channel):
+users = []
+client_user_dict = {}
+
+def emit_all_messages(channel):
     all_messages = [ \
         db_message.content for db_message \
         in db.session.query(models.Message).all()]
@@ -47,34 +51,43 @@ def emit_all_addresses(channel):
     socketio.emit(channel, {
         'allMessages': all_messages
     })
+    
+@socketio.on('new user')
+def on_new_user(data):
+    client_user_dict[request.sid] = data['name']
+    print(data['name'] + " logged in")
+    users.append(data['name'])
+    emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
+    
+    
+@socketio.on('request all users')
+def request_all_users():
+    socketio.emit('all users', {
+        'allUsers': users
+    })
 
 
 @socketio.on('connect')
 def on_connect():
     print('Someone connected!')
-    socketio.emit('connected', {
-        'test': 'Connected'
-    })
-    
-    emit_all_addresses(MESSAGE_RECEIVED_CHANNEL)
     
 
 @socketio.on('disconnect')
 def on_disconnect():
-    print ('Someone disconnected!')
+    print ('Someone disconnected!' + request.sid)
 
 @socketio.on('new message input')
-def on_new_address(data):
+def on_new_message(data):
     print("Got an event for new message input with data:", data)
     
     db.session.add(models.Message(userPH, userkeyPH, data["message"]));
     db.session.commit();
     
-    emit_all_addresses(MESSAGE_RECEIVED_CHANNEL)
+    emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
 
 @app.route('/')
 def index():
-    emit_all_addresses(MESSAGE_RECEIVED_CHANNEL)
+    emit_all_messages(MESSAGE_RECEIVED_CHANNEL)
 
     return flask.render_template("index.html")
 
