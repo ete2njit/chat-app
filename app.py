@@ -15,10 +15,8 @@ RECEIVE_MESSAGE_CHANNEL     = 'new message input'
 SEND_ALL_USERS_CHANNEL      = 'all users'
 NEW_USER_CHANNEL            = 'new user'
 
-
 userPH="user"
 userkeyPH="key"
-
 
 app = flask.Flask(__name__)
 

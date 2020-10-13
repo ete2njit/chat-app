@@ -10,6 +10,12 @@ export function Message(props) {
         messageType = "own"
     }
     
+    if (props.message[1].slice(props.message[1].length - 3) === "bot")
+    {
+        messageType = "bot"
+    }
+    
+    
     return (
         <div className={messageType}>
             <div className="message">

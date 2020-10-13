@@ -5,13 +5,24 @@
     background-color: #EEE;
 }
 
-
 .other {
     margin-bottom: 0.3%;
     margin-top: 0.3%;
     position: relative;
     left: 1%;
     width: 80%;
+}
+
+.bot {
+    margin-bottom: 0.3%;
+    margin-top: 0.3%;
+    position: relative;
+    left: 1%;
+    width: 80%;
+}
+
+.bot .author {
+    color: blue;
 }
 
 .own {

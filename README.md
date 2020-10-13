@@ -39,8 +39,9 @@ If you see any error messages, make sure you use `sudo pip` or `sudo npm`. If it
     b) I recommend 4-5 characters - it doesn't have to be very secure. Remember this password!  
         `create user [some_username_here] superuser password '[some_unique_new_password_here]';`    
     c) `\q` to quit out of sql    
-8. `cd` into `project2-m1-ete2` and make a new file called `sql.env` and add `SQL_USER=` and `SQL_PASSWORD=` in it  
-9. Fill in those values with the values you put in 7. b)  
+8. `cd` into `project2-m1-ete2` and make a new file called `sql.env` and add `DATABASE_URL=` into it 
+9. Set database_url equal to "postgresql://{username}:{password}@localhost/postgres", where {username} 
+   is the username and {password} is the password from step 7b).
   
   
 # Enabling read/write from SQLAlchemy  
