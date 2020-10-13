@@ -9,8 +9,11 @@ import models
 from chatbot import Chatbot
 from flask import request
 
-SEND_ALL_MESSAGES_CHANNEL = 'send all messages'
-SEND_ONE_MESSAGE_CHANNEL = 'send one message'
+SEND_ALL_MESSAGES_CHANNEL   = 'send all messages'
+SEND_ONE_MESSAGE_CHANNEL    = 'send one message'
+RECEIVE_MESSAGE_CHANNEL     = 'new message input'
+SEND_ALL_USERS_CHANNEL      = 'all users'
+NEW_USER_CHANNEL            = 'new user'
 
 
 userPH="user"
@@ -56,26 +59,18 @@ def get_all_messages():
         in db.session.query(models.Message).all()]
         
     return all_messages
-    
-    
-@socketio.on('request all users')
-def request_all_users():
-    socketio.emit('all users', {
-        'allUsers': users
-    })
-
 
 @socketio.on('connect')
 def on_connect():
     print('Someone connected!')
     
     
-@socketio.on('new user')
+@socketio.on(NEW_USER_CHANNEL)
 def on_new_user(data):
     client_user_dict[request.sid] = data['name']
     print(data['name'] + " logged in")
     
-    socketio.emit('all users', {
+    socketio.emit(SEND_ALL_USERS_CHANNEL, {
         'allUsers': users
     }, room=request.sid)
     
@@ -99,7 +94,7 @@ def on_disconnect():
         users.remove(client_user_dict[request.sid])
         print (client_user_dict[request.sid] + ' has disconnected!')
 
-@socketio.on('new message input')
+@socketio.on(RECEIVE_MESSAGE_CHANNEL)
 def on_new_message(data):
     print("Got an event for new message input with data:", data)
     
