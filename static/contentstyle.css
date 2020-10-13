@@ -19,6 +19,10 @@
 .settings-window {
     position: absolute;
     top: 5%;
+    left: 77.5%;
+    width: 20%;
+    bottom: 20%;
+    
 }
 
 .login-page {
