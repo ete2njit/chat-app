@@ -11,7 +11,7 @@ import "../static/contentstyle.css";
 
 export function Content() {
     // display count of 0 means show the whole chatlog
-    const [displayCount, setDisplayCount] = React.useState(5);     
+    const [displayCount, setDisplayCount] = React.useState(15);     
     const [username, setUsername] = React.useState("")
     
 
