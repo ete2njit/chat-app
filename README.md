@@ -81,6 +81,12 @@ are not the most recent. I tried to fix this using something I found here: https
 specifically this answer: The trick is to use display: flex; and flex-direction: column-reverse;, but this resulted in my entire chatflow being upside down, and the most recent 
 messages being at the top. So instead of flipping the scrollbar, it flipped my chat, which was not exactly what I wanted to accomplish.
 
+A large issue that I found far too close to the deadline to deal with it is components seemingly being mounted multiple times. Whenever I send an emit from my server to update the chat, the
+amount of times that update is received on a client is double. So when they join, they receive the chatlog once. When a message is sent, they receive the message twice. If another
+message is sent, they will receive that 4 times etc exponentially rising. Obviously, this becomes a problem very quickly and makes it impossible to use the chatroom after a few messages. 
+I have tried git checkout to a previous build, but even builds from long ago had similar issues, where the number of calls would rise linearly at best. Due to the server having its own debug
+output, I can reasonably assume the server does only send the update once, but the clients have an exponentially rising number of socket listeners.
+
 
 Tech Issues:
 
