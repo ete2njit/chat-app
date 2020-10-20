@@ -1,3 +1,4 @@
+
 .message {
     position: relative;
     border-radius: 5px;
@@ -33,9 +34,19 @@
     width: 80%;
 }
 
+.profileimage {
+    height: 5px;
+    width: auto;
+}
+
 .author {
     margin-left: 2px;
     font-weight: bold;
+}
+
+img {
+    height: 30px;
+    width: auto;
 }
 
 .content {

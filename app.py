@@ -48,12 +48,12 @@ client_userkey_dict = {}
 bot = Chatbot()
 users.append(bot.name)
 
-def emit_all_messages():
-    all_messages = get_all_messages()
-    
-    socketio.emit(SEND_ALL_MESSAGES_CHANNEL, {
-        "allMessages": all_messages
+
+def send_one_message(name, image, key, message):
+    socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
+        "message": (message, name, key, image),
     })
+    return
     
 
 def get_all_messages():
@@ -107,7 +107,7 @@ def login_requested(data):
     
     socketio.emit(SEND_ALL_MESSAGES_CHANNEL, {
         'allMessages': get_all_messages()
-    }, room = request.sid)
+    }, room=request.sid)
     
 
 @socketio.on('disconnect')
@@ -124,18 +124,19 @@ def on_disconnect():
 def on_new_message(data):
     print("Got an event for new message input with data:", data)
     
-    db.session.add(models.Message(client_user_dict[request.sid], client_userimage_dict[request.sid], client_userkey_dict[request.sid], data["message"]));
+    name = client_user_dict[request.sid]
+    key  = client_userkey_dict[request.sid]
+    image = client_userimage_dict[request.sid]
+    message = data["message"]
     
-    socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
-        'message': (data["message"], client_user_dict[request.sid], client_userkey_dict[request.sid], client_userimage_dict[request.sid])
-    })
+    db.session.add(models.Message(name, image, key, message));
+    
+    send_one_message(name, image, key, message)
     
     if bot.isCommand(data["message"]):
         botmessage = bot.process(data["message"])
         db.session.add(models.Message(bot.name, bot.image, bot.key, botmessage))
-        socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
-            'message': [(botmessage, bot.name, bot.key, bot.image, )]
-        })
+        send_one_message(bot.name, bot.image, bot.key, botmessage)
     db.session.commit();
     
     

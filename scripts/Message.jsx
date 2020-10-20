@@ -5,12 +5,14 @@ import "../static/messagestyle.css";
 export function Message(props) {
     let messageType = "other"
     
+    console.log(props)
+    
     if (props.message[1] === props.username)
     {
         messageType = "own"
     }
     
-    if (props.message[1].slice(props.message[1].length - 3) === "bot")
+    if (props.message[1].endsWith("bot"))
     {
         messageType = "bot"
     }
@@ -18,12 +20,9 @@ export function Message(props) {
     
     return (
         <div className={messageType}>
-            <div className="profileimage">
-                <img src={ props.message[3] } />
-            </div>
             <div className="message">
                 <div className="author">
-                    <span>{ props.message[1] }:</span>
+                    <span> <img src={ props.message[3] } />{ props.message[1] }:</span>
                 </div>
                 <div className="content">
                     <span>{ props.message[0] }</span>
