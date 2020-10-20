@@ -1,4 +1,5 @@
 import { GoogleButton } from "./GoogleButton";
+import * as React from 'react';
 import "../static/loginstyle.css";
 
 export function Login(props) {

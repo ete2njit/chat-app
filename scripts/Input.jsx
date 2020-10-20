@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Socket } from './Socket';
 import "../static/inputstyle.css";
 

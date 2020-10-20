@@ -1,5 +1,6 @@
 import { Socket } from './Socket';
 import { GoogleLogin } from 'react-google-login';
+import * as React from 'react';
 import "../static/googlebuttonstyle.css";
 
  
