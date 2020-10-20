@@ -8,6 +8,9 @@ import flask_socketio
 import models 
 from chatbot import Chatbot
 from flask import request
+from rfc3987 import parse
+import requests
+
 
 SEND_ALL_MESSAGES_CHANNEL   = 'send all messages'
 SEND_ONE_MESSAGE_CHANNEL    = 'send one message'
@@ -49,12 +52,12 @@ bot = Chatbot()
 users.append(bot.name)
 
 
-def send_one_message(name, image, key, message):
+def send_one_message(name, image, key, message, messagetype = "text"):
     socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
-        "message": (message, name, key, image),
+        "message": (message, name, key, image, messagetype),
     })
     return
-    
+
 
 def get_all_messages():
     all_messages = [ \
@@ -129,9 +132,24 @@ def on_new_message(data):
     image = client_userimage_dict[request.sid]
     message = data["message"]
     
-    db.session.add(models.Message(name, image, key, message));
     
-    send_one_message(name, image, key, message)
+    try:
+        # message is a valid url
+        parse(message.strip(), rule="IRI")
+        
+        db.session.add(models.Message(name, image, key, message, "link"));
+        send_one_message(name, image, key, message, "link")
+        
+        db.session.add(models.Message(bot.name, bot.image, bot.key, message, "image"))
+        send_one_message(bot.name, bot.image, bot.key, message, "image")
+    
+    except:
+        # message is not a valid url
+        messagetype = "text"
+        db.session.add(models.Message(name, image, key, message));
+        send_one_message(name, image, key, message)
+        
+        
     
     if bot.isCommand(data["message"]):
         botmessage = bot.process(data["message"])
@@ -139,6 +157,7 @@ def on_new_message(data):
         send_one_message(bot.name, bot.image, bot.key, botmessage)
     db.session.commit();
     
+    return
     
 
 @app.route('/')

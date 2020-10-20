@@ -13,7 +13,7 @@ class Chatbot:
         
     
     def about(self):
-        return "A long time ago, in a chat room far far away there lived a chatbot with functionality that can be found when typing !! help"
+        return "Go no further, you must. Found Master Yoda, you have."
     
     def help(self):
         return ("Type '!! about' for info about me! Type '!! funtranslate <message>' and I will translate your message. " +
@@ -30,7 +30,7 @@ class Chatbot:
         
         if response:
             return joke_content['setup'] + " " + joke_content['punchline']
-        return "Error when fetching joke from the official joke api"
+        return "Ran out of jokes, Yoda has."
         
     def translate(self, sentence):
         response = requests.get("https://api.funtranslations.com/translate/yoda.json?text=" + sentence)
@@ -38,7 +38,7 @@ class Chatbot:
         
         if response:
             return translation["contents"]["translated"]
-        return "Error when fetching translation of '" + sentence + "' from Master Yoda"
+        return "At a loss for words, Master Yoda is."
         
     
     def process(self, argument):
