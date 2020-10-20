@@ -13,7 +13,7 @@ export function Chat(props) {
         React.useEffect(() => {
             Socket.on('send all messages', (data) => {
                 console.log("Received all messages from server");
-                setChatlog(data['allMessages'])
+                setChatlog(chatlog => data['allMessages'])
             })
         });
     }
@@ -22,8 +22,7 @@ export function Chat(props) {
         React.useEffect(() => {
             Socket.on('send one message', (data) => {
                 console.log("Received the latest message from server " + data['message'])
-                const newChatlog = chatlog.concat(data['message'])
-                setChatlog(newChatlog)
+                setChatlog(chatlog => [...chatlog, data['allMessages']])
             })
         })
     }
