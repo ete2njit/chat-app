@@ -13,6 +13,7 @@ export function Content() {
     // display count of 0 means show the whole chatlog
     const [displayCount, setDisplayCount] = React.useState(15);     
     const [username, setUsername] = React.useState("")
+    const [userkey, setUserkey] = React.useState("")
     
 
     
@@ -20,17 +21,28 @@ export function Content() {
         setDisplayCount(event.target.value);
     }
     
+    function LoginApproved() {
+        React.useEffect(() => {
+            Socket.on('grant login', (data) => {
+                console.log("Logging in as " + data['username']);
+                setUsername(data['username'])
+                setUserkey(data['userkey'])
+            })
+        })
+    }
     
+    LoginApproved();
 
     if(username == "")
     {
         return (
             <div className="login-page">
-                <Login setName={ setUsername } />
+                <Login />
             </div>
         )
     }
-
+    
+    console.log(username)
             
     return (
         <div className="main-page">
@@ -38,7 +50,6 @@ export function Content() {
             <Chat           class="chat-window"         username={ username }           displayCount={ displayCount }/>
             <Settings       class="settings-window"     displayCount={ displayCount }   handleChange={ handleChange } />
         </div>
-    
     );
 }
  

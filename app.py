@@ -14,6 +14,8 @@ SEND_ONE_MESSAGE_CHANNEL    = 'send one message'
 RECEIVE_MESSAGE_CHANNEL     = 'new message input'
 SEND_ALL_USERS_CHANNEL      = 'all users'
 NEW_USER_CHANNEL            = 'new user'
+USER_LOGIN_REQUEST_CHANNEL  = 'user login'
+LOGIN_GRANTED_CHANNEL       = 'grant login'
 
 userPH="user"
 userkeyPH="key"
@@ -57,25 +59,43 @@ def get_all_messages():
         in db.session.query(models.Message).all()]
         
     return all_messages
+    
 
 @socketio.on('connect')
 def on_connect():
     print('Someone connected!')
     
     
-@socketio.on(NEW_USER_CHANNEL)
-def on_new_user(data):
-    client_user_dict[request.sid] = data['name']
-    print(data['name'] + " logged in")
+@socketio.on(USER_LOGIN_REQUEST_CHANNEL)
+def login_requested(data):
+    
+    username = ""
+    userkey = ""
+
+    if(data['type'] == "Google"):
+        username = data['data']['profileObj']['name']
+        userkey = "GOOGLE" + data['data']['profileObj']['googleId']
+        
+        socketio.emit(LOGIN_GRANTED_CHANNEL, {
+            'username': username,
+            'userkey': userkey
+        }, room = request.sid)
+        
+    else: 
+        return
+
+    
+    client_user_dict[request.sid] = username
+    print(username + " logged in")
     
     socketio.emit(SEND_ALL_USERS_CHANNEL, {
         'allUsers': users
     }, room=request.sid)
     
-    users.append(data['name'])
+    users.append(username)
     
     socketio.emit('user connected', {
-        'name': str(data['name'])
+        'name': str(username)
     })
     
     socketio.emit(SEND_ALL_MESSAGES_CHANNEL, {
