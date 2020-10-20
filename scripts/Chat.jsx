@@ -13,18 +13,18 @@ export function Chat(props) {
         React.useEffect(() => {
             Socket.on('send all messages', (data) => {
                 console.log("Received all messages from server");
-                setChatlog(chatlog => data['allMessages'])
-            })
+                setChatlog(chatlog => data['allMessages']);
+            });
         }, []);
     }
     
     function getOneMessage() {
         React.useEffect(() => {
             Socket.on('send one message', (data) => {
-                console.log("Received the latest message from server " + data['message'])
-                setChatlog(chatlog => [...chatlog, data['message']])
-            })
-        }, [])
+                console.log("Received the latest message from server " + data['message']);
+                setChatlog(chatlog => [...chatlog, data['message']]);
+            });
+        }, []);
     }
     
 

@@ -11,18 +11,18 @@ export function Information(props) {
             Socket.on('all users', (data) => {
                 console.log("Received userlist from server: " + data['allUsers']);
                 setUsers(data['allUsers']);
-            })
-        });
+            });
+        }, []);
     }
     
     function userConnected() {
         React.useEffect(() => {
             Socket.on('user connected', (data) => {
-                console.log("Received message of user connected: " + data['name'])
-                const newList = users.concat(data['name'])
+                console.log("Received message of user connected: " + data['name']);
+                const newList = users.concat(data['name']);
                 setUsers(newList);
-            })
-        })
+            });
+        }, []);
     }
     
 
@@ -30,11 +30,11 @@ export function Information(props) {
     function userDisconnected() {
         React.useEffect(() => {
             Socket.on('user disconnected', (data) => {
-                console.log("Received message of user disconnect: " + data['name'])
+                console.log("Received message of user disconnect: " + data['name']);
                 const newList = users.filter((item) => item !== data['name']);
                 setUsers(newList);
-            })
-        })
+            });
+        }, []);
     }
     
     getUsers();
@@ -54,5 +54,5 @@ export function Information(props) {
                 </div>
             </div>
         </div>
-    )
+    );
 }

@@ -1,6 +1,5 @@
-import * as React from 'react';
 import { Socket } from './Socket';
-import "../static/inputstyle.css"
+import "../static/inputstyle.css";
 
 function handleSubmit(event) {
     let newMessage = document.getElementById("message");
@@ -9,7 +8,7 @@ function handleSubmit(event) {
     });
     
     console.log('Sent the message ' + newMessage.value + ' to server!');
-    newMessage.value = ''
+    newMessage.value = '';
     
     event.preventDefault();
 }

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import "../static/settingstyle.css";
 
 
@@ -14,5 +13,5 @@ export function Settings(props) {
                 />
             </div>
         </div>
-    )
+    );
 }

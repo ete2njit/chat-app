@@ -1,6 +1,4 @@
-  
 import * as React from 'react';
-
 import { Socket }       from './Socket';
 import { Chat }         from './Chat';
 import { Login }        from './Login';
@@ -24,10 +22,10 @@ export function Content() {
         React.useEffect(() => {
             Socket.on('grant login', (data) => {
                 console.log("Logging in as " + data['username']);
-                setUsername(data['username'])
-                setUserkey(data['userkey'])
-            })
-        })
+                setUsername(data['username']);
+                setUserkey(data['userkey']);
+            });
+        }, []);
     }
     
     LoginApproved();
@@ -38,10 +36,8 @@ export function Content() {
             <div className="login-page">
                 <Login />
             </div>
-        )
+        );
     }
-    
-    console.log(username)
             
     return (
         <div className="main-page">

@@ -1,20 +1,17 @@
-import * as React from 'react';
 import "../static/messagestyle.css";
 
 
 export function Message(props) {
-    let messageType = "other"
-    
-    console.log(props)
+    let messageType = "other";
     
     if (props.message[1] === props.username)
     {
-        messageType = "own"
+        messageType = "own";
     }
     
     if (props.message[1].endsWith("bot"))
     {
-        messageType = "bot"
+        messageType = "bot";
     }
     
     

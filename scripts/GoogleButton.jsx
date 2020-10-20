@@ -1,8 +1,6 @@
-import * as React from 'react';
 import { Socket } from './Socket';
-import ReactDOM from 'react-dom';
 import { GoogleLogin } from 'react-google-login';
-import "../static/googlebuttonstyle.css"
+import "../static/googlebuttonstyle.css";
 
  
  
@@ -12,12 +10,12 @@ const successGoogle = (response) => {
   Socket.emit('user login', {
       'type': "Google",
       'data': response,
-  })
-}
+  });
+};
 
 const failureGoogle = (response) => {
   console.log("Error signing in");
-}
+};
 
 export function GoogleButton() {
     return (

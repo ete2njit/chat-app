@@ -1,7 +1,4 @@
-import * as React from 'react';
-
-import { Socket } from './Socket';
-import { GoogleButton } from "./GoogleButton"
+import { GoogleButton } from "./GoogleButton";
 import "../static/loginstyle.css";
 
 export function Login(props) {
