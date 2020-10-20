@@ -2,25 +2,16 @@
 import flask_sqlalchemy
 from app import db
 
-
-class Usps(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    address = db.Column(db.String(120))
-    
-    def __init__(self, a):
-        self.address = a
-        
-    def __repr__(self):
-        return '<Usps address: %s>' % self.address 
-
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String(120))
     userkey = db.Column(db.String(120))
+    userimage = db.Column(db.String(512))
     content = db.Column(db.String(1024))
     
-    def __init__(self, user, userkey, message):
+    def __init__(self, user, userimage, userkey, message):
         self.user = user
+        self.userimage = userimage
         self.userkey = userkey
         self.content = message
         

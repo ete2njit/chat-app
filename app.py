@@ -42,6 +42,9 @@ db.session.commit()
 
 users = []
 client_user_dict = {}
+client_userimage_dict = {}
+client_userkey_dict = {}
+
 bot = Chatbot()
 users.append(bot.name)
 
@@ -55,7 +58,7 @@ def emit_all_messages():
 
 def get_all_messages():
     all_messages = [ \
-        (db_message.content, db_message.user) for db_message \
+        (db_message.content, db_message.user, db_message.userkey, db_message.userimage) for db_message \
         in db.session.query(models.Message).all()]
         
     return all_messages
@@ -70,11 +73,13 @@ def on_connect():
 def login_requested(data):
     
     username = ""
+    userimage = ""
     userkey = ""
 
     if(data['type'] == "Google"):
         username = data['data']['profileObj']['name']
         userkey = "GOOGLE" + data['data']['profileObj']['googleId']
+        userimage = data['data']['profileObj']['imageUrl']
         
         socketio.emit(LOGIN_GRANTED_CHANNEL, {
             'username': username,
@@ -85,6 +90,8 @@ def login_requested(data):
         return
 
     
+    client_userimage_dict[request.sid] = userimage
+    client_userkey_dict[request.sid] = userkey
     client_user_dict[request.sid] = username
     print(username + " logged in")
     
@@ -111,22 +118,23 @@ def on_disconnect():
         });
         users.remove(client_user_dict[request.sid])
         print (client_user_dict[request.sid] + ' has disconnected!')
+        
 
 @socketio.on(RECEIVE_MESSAGE_CHANNEL)
 def on_new_message(data):
     print("Got an event for new message input with data:", data)
     
-    db.session.add(models.Message(client_user_dict[request.sid], userkeyPH, data["message"]));
+    db.session.add(models.Message(client_user_dict[request.sid], client_userimage_dict[request.sid], client_userkey_dict[request.sid], data["message"]));
     
     socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
-        'message': [(data["message"], client_user_dict[request.sid])]
+        'message': (data["message"], client_user_dict[request.sid], client_userkey_dict[request.sid], client_userimage_dict[request.sid])
     })
     
     if bot.isCommand(data["message"]):
         botmessage = bot.process(data["message"])
-        db.session.add(models.Message(bot.name, bot.key, botmessage))
+        db.session.add(models.Message(bot.name, bot.image, bot.key, botmessage))
         socketio.emit(SEND_ONE_MESSAGE_CHANNEL, {
-            'message': [(botmessage, bot.name)]
+            'message': [(botmessage, bot.name, bot.key, bot.image, )]
         })
     db.session.commit();
     

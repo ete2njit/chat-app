@@ -4,10 +4,13 @@ import requests
 class Chatbot:
     name = ""
     key = ""
+    image = ""
     
-    def __init__(self, name="chatbot", key="botkey"):
+    def __init__(self, name="Yoda-bot", key="botkey", image="https://images.immediate.co.uk/production/volatile/sites/3/2017/12/yoda-the-empire-strikes-back-28a7558.jpg?quality=90"):
         self.name=name
         self.key=key
+        self.image=image
+        
     
     def about(self):
         return "A long time ago, in a chat room far far away there lived a chatbot with functionality that can be found when typing !! help"

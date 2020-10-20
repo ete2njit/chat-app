@@ -12,9 +12,8 @@ import "../static/contentstyle.css";
 export function Content() {
     // display count of 0 means show the whole chatlog
     const [displayCount, setDisplayCount] = React.useState(15);     
-    const [username, setUsername] = React.useState("")
-    const [userkey, setUserkey] = React.useState("")
-    
+    const [username, setUsername] = React.useState("");
+    const [userkey, setUserkey] = React.useState("");
 
     
     function handleChange(event) {
@@ -47,7 +46,7 @@ export function Content() {
     return (
         <div className="main-page">
             <Information    class="information-window"  username={ username } />
-            <Chat           class="chat-window"         username={ username }           displayCount={ displayCount }/>
+            <Chat           class="chat-window"         username={ username }           userkey={ userkey }             displayCount={ displayCount } />
             <Settings       class="settings-window"     displayCount={ displayCount }   handleChange={ handleChange } />
         </div>
     );

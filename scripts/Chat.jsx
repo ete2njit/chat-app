@@ -15,16 +15,16 @@ export function Chat(props) {
                 console.log("Received all messages from server");
                 setChatlog(chatlog => data['allMessages'])
             })
-        });
+        }, []);
     }
     
     function getOneMessage() {
         React.useEffect(() => {
             Socket.on('send one message', (data) => {
                 console.log("Received the latest message from server " + data['message'])
-                setChatlog(chatlog => [...chatlog, data['allMessages']])
+                setChatlog(chatlog => [...chatlog, data['message']])
             })
-        })
+        }, [])
     }
     
 
@@ -34,7 +34,6 @@ export function Chat(props) {
         for(let i = 0; i < chatlog.length && (props.displayCount == 0 || i < props.displayCount); i++)
         {
             chat[props.displayCount-i] = chatlog[chatlog.length-1-i];
-            
         }
         
     getOneMessage();
@@ -44,7 +43,7 @@ export function Chat(props) {
         <div className="chat-window">
             <div className="chat-box">
                 {chat.map((message, index) => (
-                    <Message className="message" key={ index } message={ message } username={ props.username } />))}
+                    <Message className="message" key={ index } message={ message } username={ props.username } userkey={ props.userkey } />))}
             </div>
             <div className="input-box">
                 <Input />

@@ -18,6 +18,9 @@ export function Message(props) {
     
     return (
         <div className={messageType}>
+            <div className="profileimage">
+                <img src={ props.message[3] } />
+            </div>
             <div className="message">
                 <div className="author">
                     <span>{ props.message[1] }:</span>
