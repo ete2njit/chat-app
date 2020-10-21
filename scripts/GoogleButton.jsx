@@ -15,6 +15,7 @@ const successGoogle = (response) => {
 };
 
 const failureGoogle = (response) => {
+    console.log(response)
   console.log("Error signing in");
 };
 

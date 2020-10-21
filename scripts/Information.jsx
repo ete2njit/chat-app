@@ -10,7 +10,7 @@ export function Information(props) {
         React.useEffect(() => {
             Socket.on('all users', (data) => {
                 console.log("Received userlist from server: " + data['allUsers']);
-                setUsers(data['allUsers']);
+                setUsers(users => data['allUsers']);
             });
         }, []);
     }
@@ -19,8 +19,7 @@ export function Information(props) {
         React.useEffect(() => {
             Socket.on('user connected', (data) => {
                 console.log("Received message of user connected: " + data['name']);
-                const newList = users.concat(data['name']);
-                setUsers(newList);
+                setUsers(users => [ ...users, data['name']]);
             });
         }, []);
     }
