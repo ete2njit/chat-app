@@ -30,7 +30,7 @@ class Chatbot:
         
         if response:
             return joke_content['setup'] + " " + joke_content['punchline']
-        return "Ran out of jokes, Yoda has."
+        return "Run out of jokes, Yoda has."
         
     def translate(self, sentence):
         response = requests.get("https://api.funtranslations.com/translate/yoda.json?text=" + sentence)
@@ -60,7 +60,7 @@ class Chatbot:
         
         
         
-        return "'" + command.lower() + "' is not a recognized command. Type !! help for info about recognized commands"
+        return "A recognized command, '" + command.lower() + "' is not. Type !! help for info about recognized commands"
         
     def isCommand(self, argument):
         if argument.strip()[0] == '!' and argument.strip()[1] == '!':
