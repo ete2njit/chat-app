@@ -61,7 +61,7 @@ def send_one_message(name, image, key, message, messagetype = "text"):
 
 def get_all_messages():
     all_messages = [ \
-        (db_message.content, db_message.user, db_message.userkey, db_message.userimage) for db_message \
+        (db_message.content, db_message.user, db_message.userkey, db_message.userimage, db_message.messagetype) for db_message \
         in db.session.query(models.Message).all()]
         
     return all_messages
@@ -140,21 +140,26 @@ def on_new_message(data):
         db.session.add(models.Message(name, image, key, message, "link"));
         send_one_message(name, image, key, message, "link")
         
-        db.session.add(models.Message(bot.name, bot.image, bot.key, message, "image"))
-        send_one_message(bot.name, bot.image, bot.key, message, "image")
+
+        head = requests.head(message.strip())
+        if(head.headers["Content-Type"].startswith("image/")):
+            db.session.add(models.Message(bot.name, bot.image, bot.key, message, "image"))
+            send_one_message(bot.name, bot.image, bot.key, message, "image")
+        
+        
     
     except:
         # message is not a valid url
         messagetype = "text"
         db.session.add(models.Message(name, image, key, message));
         send_one_message(name, image, key, message)
-        
-        
     
     if bot.isCommand(data["message"]):
         botmessage = bot.process(data["message"])
         db.session.add(models.Message(bot.name, bot.image, bot.key, botmessage))
         send_one_message(bot.name, bot.image, bot.key, botmessage)
+        
+        
     db.session.commit();
     
     return
