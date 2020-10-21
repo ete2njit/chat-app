@@ -6,12 +6,12 @@ import "../static/messagestyle.css";
 export function Message(props) {
     let messageType = "other";
     
-    if (props.message[1] === props.username)
+    if (props.message[2] === props.userkey)
     {
         messageType = "own";
     }
     
-    if (props.message[1].endsWith("bot"))
+    if (props.message[2].endsWith("bot"))
     {
         messageType = "bot";
     }
