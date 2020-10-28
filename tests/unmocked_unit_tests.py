@@ -22,7 +22,11 @@ class ChatAppTestCase(unittest.TestCase):
             },
             {
                 KEY_INPUT: "help",
-                KEY_EXPECTED: False
+                KEY_EXPECTED: False,
+            },
+            {
+                KEY_INPUT: "!!about",
+                KEY_EXPECTED: True,
             }
         ]
 

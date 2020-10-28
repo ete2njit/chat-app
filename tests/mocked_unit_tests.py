@@ -8,6 +8,8 @@ import sys
 import json
 from requests.models import Response
 
+import flask_socketio
+
 sys.path.append(join(dirname(__file__), "../"))
 
 from chatbot import Chatbot
@@ -39,9 +41,15 @@ class ChatAppTestCase(unittest.TestCase):
                 KEY_EXPECTED: "sentence to randcase",
             }
         ]
+        self.chatbot_translate_from_process_test = [
+            {
+                KEY_INPUT: "!! funtranslate sentence to translate",
+                KEY_EXPECTED: "sentence to translate",
+            }
+        ]
         self.app_login_requested_test = [
             {
-                KEY_INPUT: {'type': "GOOGLE", 'data':{'profileObj':{'name': "Bill", "googleId": "Bills Google Id", "imageUrl": "Bills Image Url"}}},
+                KEY_INPUT: {'type': "Google", 'data':{'profileObj':{'name': "Bill", "googleId": "Bills Google Id", "imageUrl": "Bills Image Url"}}},
                 KEY_EXPECTED: {
                     "username": "Bill",
                     "userkey": "GOOGLEBills Google Id",
@@ -66,7 +74,9 @@ class ChatAppTestCase(unittest.TestCase):
         return values[1]
         
     def mocked_socketio_emit(self, channel, data, requestid):
+        print(channel)
         return
+    
     
     def test_chatbot(self):
         bot = Chatbot()
@@ -88,12 +98,15 @@ class ChatAppTestCase(unittest.TestCase):
                 bot_response = bot.randcase(test_case[KEY_INPUT])
                 
                 self.assertEqual(test_case[KEY_EXPECTED], bot_response)
+            
+        for test_case in self.chatbot_translate_from_process_test:
+            with mock.patch('requests.get', self.mocked_funtranslate_get):
+                bot_response = bot.process(test_case[KEY_INPUT])
                 
+                self.assertEqual(test_case[KEY_EXPECTED], bot_response)
                 
-                
-        for test_case in self.app_login_requested_test:
-            with mock.patch('flask_socketio.SocketIO.emit', self.mocked_socketio_emit):
-                app.login_requested(test_case[KEY_INPUT])
+        
+            
             
 if __name__ == '__main__':
     unittest.main()
