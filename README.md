@@ -13,6 +13,7 @@
   j) `npm install react-google-login`
   k) `npm install react react-dom`
   l) `pip install rfc3987`
+  m) `npm i -S prop-types`
 If you see any error messages, make sure you use `sudo pip` or `sudo npm`. If it says "pip cannot be found", run `which pip` and use `sudo [path to pip from which pip] install`  
   
 # Getting PSQL to work with Python  

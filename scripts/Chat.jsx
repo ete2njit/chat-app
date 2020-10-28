@@ -1,53 +1,55 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Input } from './Input';
 import { Message } from './Message';
 import { Socket } from './Socket';
-import "../static/chatstyle.css";
+import '../static/chatstyle.css';
 
+export function Chat({ username, userkey, displayCount }) {
+  const [chatlog, setChatlog] = React.useState([]);
+  let chat = [];
 
-export function Chat(props) {
-    const [chatlog, setChatlog] = React.useState([]);
-    let chat = [];
-    
-    function getAllMessages() {
-        React.useEffect(() => {
-            Socket.on('send all messages', (data) => {
-                console.log("Received all messages from server");
-                setChatlog(chatlog => data['allMessages']);
-            });
-        }, []);
+  function getAllMessages() {
+    React.useEffect(() => {
+      Socket.on('send all messages', (data) => {
+        setChatlog((chatlog) => data.allMessages);
+      });
+    }, []);
+  }
+
+  function getOneMessage() {
+    React.useEffect(() => {
+      Socket.on('send one message', (data) => {
+        setChatlog((chatlog) => [...chatlog, data.message]);
+      });
+    }, []);
+  }
+
+  if (displayCount === 0) chat = chatlog;
+  else {
+    for (let i = 0; i < chatlog.length && (displayCount === 0 || i < displayCount); i += 1) {
+      chat[displayCount - i] = chatlog[chatlog.length - 1 - i];
     }
-    
-    function getOneMessage() {
-        React.useEffect(() => {
-            Socket.on('send one message', (data) => {
-                console.log("Received the latest message from server " + data['message']);
-                setChatlog(chatlog => [...chatlog, data['message']]);
-            });
-        }, []);
-    }
-    
+  }
 
-    if(props.displayCount == 0)
-        chat = chatlog;
-    else
-        for(let i = 0; i < chatlog.length && (props.displayCount == 0 || i < props.displayCount); i++)
-        {
-            chat[props.displayCount-i] = chatlog[chatlog.length-1-i];
-        }
-        
-    getOneMessage();
-    getAllMessages();
-    
-    return (
-        <div className="chat-window">
-            <div className="chat-box">
-                {chat.map((message, index) => (
-                    <Message className="message" key={ index } message={ message } username={ props.username } userkey={ props.userkey } />))}
-            </div>
-            <div className="input-box">
-                <Input />
-            </div>
-        </div>
-    );
+  getOneMessage();
+  getAllMessages();
+
+  return (
+    <div className="chat-window">
+      <div className="chat-box">
+        {chat.map((message) => (
+          <Message className="message" key={message.id} message={message} username={username} userkey={userkey} />))}
+      </div>
+      <div className="input-box">
+        <Input />
+      </div>
+    </div>
+  );
 }
+
+Chat.propTypes = {
+  username: PropTypes.string.isRequired,
+  userkey: PropTypes.string.isRequired,
+  displayCount: PropTypes.number.isRequired,
+};

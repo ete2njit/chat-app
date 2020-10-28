@@ -1,57 +1,64 @@
 import * as React from 'react';
-import { Socket }  from './Socket';
-import "../static/informationstyle.css";
+import PropTypes from 'prop-types';
+import { Socket } from './Socket';
+import '../static/informationstyle.css';
 
-      
-export function Information(props) {
-    const [users, setUsers] = React.useState([]);
-    
-     function getUsers() {
-        React.useEffect(() => {
-            Socket.on('all users', (data) => {
-                console.log("Received userlist from server: " + data['allUsers']);
-                setUsers(users => data['allUsers']);
-            });
-        }, []);
-    }
-    
-    function userConnected() {
-        React.useEffect(() => {
-            Socket.on('user connected', (data) => {
-                console.log("Received message of user connected: " + data['name']);
-                setUsers(users => [ ...users, data['name']]);
-            });
-        }, []);
-    }
-    
+export function Information({ username }) {
+  const [users, setUsers] = React.useState([]);
 
-    
-    function userDisconnected() {
-        React.useEffect(() => {
-            Socket.on('user disconnected', (data) => {
-                console.log("Received message of user disconnect: " + data['name']);
-                const newList = users.filter((item) => item !== data['name']);
-                setUsers(newList);
-            });
-        }, []);
-    }
-    
-    getUsers();
-    userConnected();
-    userDisconnected();
-    
-    return (
-        <div className="information-window">
-            <div className="information-content">
-                <h3>Logged in as { props.username }</h3>
-                <p>Current users ({ users.length }):</p>
-                <div className="users-box">
-                    {users.map((user, index) => (
-                        <div key={ index }>
-                            <span key={ index }>{ user }</span>
-                        </div>))}
-                </div>
+  function getUsers() {
+    React.useEffect(() => {
+      Socket.on('all users', (data) => {
+        setUsers((users) => data.allUsers);
+      });
+    }, []);
+  }
+
+  function userConnected() {
+    React.useEffect(() => {
+      Socket.on('user connected', (data) => {
+        setUsers((users) => [...users, data.name]);
+      });
+    }, []);
+  }
+
+  function userDisconnected() {
+    React.useEffect(() => {
+      Socket.on('user disconnected', (data) => {
+        const newList = users.filter((item) => item !== data.name);
+        setUsers(newList);
+      });
+    }, []);
+  }
+
+  getUsers();
+  userConnected();
+  userDisconnected();
+
+  return (
+    <div className="information-window">
+      <div className="information-content">
+        <h3>
+          Logged in as
+          { username }
+        </h3>
+        <p>
+          Current users (
+          { users.length }
+          ):
+        </p>
+        <div className="users-box">
+          {users.map((user) => (
+            <div key={user.id}>
+              <span key={user.id}>{ user }</span>
             </div>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
+
+Information.propTypes = {
+  username: PropTypes.string.isRequired,
+};
