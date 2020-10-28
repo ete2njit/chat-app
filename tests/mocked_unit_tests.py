@@ -47,16 +47,17 @@ class ChatAppTestCase(unittest.TestCase):
                 KEY_EXPECTED: "sentence to translate",
             }
         ]
-        self.app_login_requested_test = [
+        self.create_message_test = [
             {
-                KEY_INPUT: {'type': "Google", 'data':{'profileObj':{'name': "Bill", "googleId": "Bills Google Id", "imageUrl": "Bills Image Url"}}},
-                KEY_EXPECTED: {
-                    "username": "Bill",
-                    "userkey": "GOOGLEBills Google Id",
-                    "userimage": "Bills Image Url",
-                },
+                KEY_INPUT: 
+                    {
+                        "username": "user", 
+                        "userimage": "image",
+                        "userkey": "key",
+                        "message": "message",
+                    }
             }
-            ]
+        ]
 
        
     
@@ -104,9 +105,11 @@ class ChatAppTestCase(unittest.TestCase):
                 bot_response = bot.process(test_case[KEY_INPUT])
                 
                 self.assertEqual(test_case[KEY_EXPECTED], bot_response)
-                
-        
             
+        for test_case in self.create_message_test:
+            model = Message(test_case[KEY_INPUT]['username'], test_case[KEY_INPUT]['userimage'], test_case[KEY_INPUT]['userkey'], test_case[KEY_INPUT]['message'])
+        
+
             
 if __name__ == '__main__':
     unittest.main()
