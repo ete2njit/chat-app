@@ -58,7 +58,7 @@ class ChatAppTestCase(unittest.TestCase):
             expected = test_case[KEY_EXPECTED]
             
             self.assertEqual(bot_response, expected)
-        
+            
         for test_case in self.bot_response_test_params:
             bot_response = bot.process(test_case[KEY_INPUT])
                 
