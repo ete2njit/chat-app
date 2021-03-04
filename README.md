@@ -1,5 +1,5 @@
 # Set up React  
-0. `git clone https://github.com/NJIT-CS490/project2-m3-ete2` 
+0. `git clone https://github.com/ete2njit/chat-app` 
 1. Install your stuff!    
   a) `npm install`    
   b) `pip install flask-socketio`    
